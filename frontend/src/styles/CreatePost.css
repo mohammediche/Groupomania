@@ -1,0 +1,60 @@
+.formulaire-post{
+    padding: 30px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
+    border-radius: 8px;
+    margin: 0px auto;
+    width: 55%;
+    background: rgb(0,0,0);
+    /* background: linear-gradient(0deg, rgba(0,0,0,0.8701855742296919) 0%, rgba(31,85,91,1) 100%); */
+    background: linear-gradient(0deg, rgb(0 0 0 / 18%) 0%, rgb(31 85 91 / 81%) 100%);
+    top: 110px;
+    position: relative;
+}
+#form{
+    display: flex;
+    flex-direction: column;
+}
+/* style pour input title, postText, username */
+.input-title{
+    border: none;
+    border-radius: 25px;
+    outline: none;
+    font-size: 18px;  
+}
+.input-username{
+    border: none;
+    outline: none;
+}
+.textarea{
+    width: 96%;
+    height: 60px;
+    font-size: 15px;
+    border: 1px solid rgb(223, 223, 223);
+    background-color: #eff2f5;
+    outline: none;
+    border-radius: 20px;
+    resize: none;
+}
+.sous-form{
+    padding: 8px;
+    margin: 10px;
+}
+/* button publier */
+.div-button-publier button{
+    font-size: 16px;
+    padding: 7px 16px;
+    margin-left: 11px;
+    border: none;
+    color: #fff;
+    background-color: #1b86e5;
+    border-radius: 5px;
+}
+/* input/button Hover / focus  */
+.div-button-publier button:hover{
+    background-color: #2890ec;
+    cursor: pointer;
+
+}
+
+
+

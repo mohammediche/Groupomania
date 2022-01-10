@@ -1,0 +1,19 @@
+
+.h1-pageNotFound{
+    font-size: 45px;
+    margin-top: 200px;
+    padding-bottom: 50px;
+}
+.h1-pageNotFound,
+.h2-pageNotFound{
+    text-align: center;
+    color: #fff;
+}
+
+.h2-pageNotFound a{
+   color: #e3e3e3;
+   text-decoration: underline;
+}
+.h2-pageNotFound a:hover{
+    color: #0ce7ff;
+}

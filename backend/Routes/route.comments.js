@@ -5,6 +5,7 @@ const Auth = require("../middleware/Auth");
 
 router.post("/", Auth, commentsCtrl.createComment); 
 router.get("/:id", commentsCtrl.getOnePostComments);
+router.delete("/:commentId", Auth, commentsCtrl.deleteOneComment);
 
 
 

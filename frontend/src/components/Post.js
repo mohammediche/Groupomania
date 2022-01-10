@@ -1,22 +1,26 @@
 import Comments from "./Comments"
 import { useNavigate, useParams } from "react-router-dom"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { BiCommentDetail } from "react-icons/bi"; //icon
 import { AiOutlineLike } from "react-icons/ai"; //icon
 import { MdDelete, MdEdit } from "react-icons/md"; //icon
+import Nav from "./Nav";
 import "../styles/Post.css";
+import {AuthContext} from "../Helpers/AuthContext";
+import Likes from "./Likes";
+
 
 const Post = () => {
-    const {id} = useParams()
+    const {id} = useParams();
     const Navigate = useNavigate();
-    const [PostData, setaPostData] = useState([]) // {} au lieu de [] ??
+    const [PostData, setaPostData] = useState([]);
+    const {authState, setAuthState} = useContext(AuthContext)
     useEffect(() => {
         axios
           .get(`http://localhost:3001/posts/byId/${id}`)
           .then((res) => {
             setaPostData(res.data);
-            console.log(PostData); 
+            // console.log(authState);
             // PostData est le contenu de mon Post (title, postText, username)
           });
         }, []);
@@ -32,7 +36,7 @@ const Post = () => {
 
     return (
       <section className="content-post"> 
-
+      <Nav/>
       <div className="left-post">        
         <div className="display-flex">
           <span className="display-block">
@@ -55,14 +59,16 @@ const Post = () => {
         {/* buttons like et comments */}
           <div className="like-comments-pen">
               <div className="buttons-like-comments">
-                  <button className="icons icon-like"><AiOutlineLike /></button>
-                  <button className="icons icon-comments"><BiCommentDetail /></button>
+                  {/* <button className="icons icon-like"><AiOutlineLike /></button> */}
+                  <Likes allPost={PostData} />      
              </div>
-
-              <div className="deleteButton">
+  
+              {authState.status ?
+              <div className="deleteEditButton">
                 <button onClick={()=>{deleteOne()}} > <MdDelete/> </button> {/* lien avec l'id à faire */}
                 <button onClick={()=>{Navigate(`/edit-post/${PostData.id}`)}} > <MdEdit/> </button> 
-              </div>
+              </div> : null}
+             
           </div>
         </div>  
           <Comments/>

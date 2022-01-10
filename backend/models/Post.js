@@ -18,11 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNul: false,
     },
   });
-  // fonction pour associé la table posts à comments
+  // fonction pour associé la table posts à comments //chaque post a ses propres commentaire
    Posts.associate = (models)=>{
      Posts.hasMany(models.Comments, {
        onDelete : "cascade",
      }) /* Comments c'est le nom de la fonction dans comments.js */
+     Posts.hasMany(models.Likes, {
+      onDelete : "cascade",
+    })
    }
 
   return Posts;

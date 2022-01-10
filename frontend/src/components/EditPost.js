@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom"
 import "../styles/CreatePost.css"
+import Nav from "./Nav";
 
 const EditPost = () => {
     const Navigate = useNavigate();
@@ -35,6 +36,7 @@ const EditPost = () => {
 
     return (
     <div className="formulaire-post">
+       <Nav/>
       <form id="form" onSubmit={modifPost}>
         <input autoFocus className="sous-form input-title" placeholder="Votre titre..." required onChange={(e) => { setTitle(e.target.value);}}id="espace-title"type="text"value={title}/>
          

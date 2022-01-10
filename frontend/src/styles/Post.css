@@ -71,15 +71,15 @@
     color: #33cbe5;
   }
   /* bouton "modifié", ainsi que "supprimer" de la page post (avec l'id spécifié) */
-  .deleteButton,
+  .deleteEditButton,
   .editButton{
       display: flex;
       justify-content: flex-end;
-      padding-bottom: 13px;
+      padding-bottom: 10px;
       font-size: 20px;
      
   }
-  .deleteButton button,
+  .deleteEditButton button,
   .editButton button
   {
       background-color: transparent;
@@ -88,12 +88,14 @@
       color: rgb(235, 235, 235);
       transition: .2s;
       border: none;
+      padding: 0 10px;
   }
-  .deleteButton button:hover{
+  .deleteEditButton button:first-child:hover{
     color: rgb(177, 22, 22);
   }
-  /* bouton modfié de la page d'acceuil */
-  .editButton button:hover{
+
+  .editButton button:hover,
+  .deleteEditButton button:nth-child(2):hover{
     color: grey;
   }
   /* des réglages pour changement de style de notre post (mettre les commentaire sur le coté droit  */
@@ -112,14 +114,14 @@
   }
   
   
-  /****************    deuxiéme partie pour la page Post.js     *****************/
+  /****************    deuxiéme partie pour la page Post.js  (commentaire)    *****************/
   .div-add-comment{
     display: flex;
     align-items: center;
   }
   .image-profil-comment{
-      width: 40px;
-      height: 40px;
+      width: 60px;
+      height: 82px;
       border-radius: 50%;
       object-fit: cover;
       padding: 20px 8px 20px 8px;
@@ -149,12 +151,24 @@
   .All-comments{
     color: black;
     background-color: #edebeb;
-    border-radius: 20px;
+    border-radius: 8px;
     box-shadow: 1px 1px 6px #ffffff;
- /* box-shadow: 1px 1px 6px #33cbe5; */
-    padding: 10px 15px;
+    padding: 7px 15px;
     margin-bottom: 35px;
   }
+  /* button supprimé comment */
+  .display-username-buttonDelete{
+    display: flex;
+    justify-content: space-between;
+  }
+  .delete-comment{
+    border: none;
+    background: transparent;
+    color: red;
+    font-weight: bolder;
+    font-size: 11px;
+    cursor: pointer;
+}
   
   
   

@@ -14,22 +14,43 @@ a{
   text-decoration: none;
 }
 /* nav */
-.nav{
+.header{
 	display: flex;
 	align-items: center;
+  justify-content: space-between;
 	width: 100%;
-    padding: 30px;
-    position: fixed;
-    background-color: #12121299;
-    z-index: 9999;
-    top: 0;
+  padding: 30px;
+  position: fixed;
+  /* background-color: #121212c7; */
+  z-index: 1;
+  top: 0;
+  left: 0px;
+  background: linear-gradient( 
+    217deg, rgb(32 22 22 / 80%), rgba(255,0,0,0) 70.71%), linear-gradient( 
+    127deg, #072634, rgba(0,255,0,0) 70.71%), linear-gradient( 
+    336deg, rgb(29 48 100), rgba(0,0,255,0) 70.71%);
 }
-.nav a{
+   
+.header a{
 	color: #fff;
 	font-size: 18px;
 }
-.nav a:hover{
+.header a:hover{
 	color: #23e7e7;
+}
+.nav a{
+  padding: 10px 30px;
+}
+.signup{
+    color: #23e7e7;
+    border: 2px solid #23e7e7;
+    transition: .3s;
+}
+.signup:hover{
+  background-color: #23e7e7;
+  color: black!important;
+  font-weight: bold;
+
 }
 /* le lien présent a gauche dans la navigation */
 .retour-accueil{

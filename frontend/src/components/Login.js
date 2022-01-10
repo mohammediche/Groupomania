@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import "../styles/Signup.Login.css"
 import { FaUserAlt, FaLock } from "react-icons/fa"; //icon
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import {AuthContext} from "../Helpers/AuthContext";
+import Nav from "./Nav";
+
 // import logo from"../images/logo-black.png"
 
 const Login = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	let Navigate = useNavigate();
+	const {setAuthState} = useContext(AuthContext); // use context qui vas utiliser les valeurs de App.js AuthContext.Provider value={(authState, setAuthState)} 
+	const Navigate = useNavigate();
 
 
 	const submitLogin = ()=>{
@@ -16,16 +20,20 @@ const Login = () => {
 		axios.post("http://localhost:3001/auth/login", data).then(res=>{
 			// si il y a une erreur parmis ceux qu'on a mis dans le backend, on renvoi une alert erreur.
 			if(res.data.error){
-				{alert("erreur, username ou le mot de passe n'existe pas")}; 
+				alert("erreur, username ou le mot de passe n'existe pas"); 
 			}else{ //sinon, on stock notre token dans notre localStorage
-				localStorage.setItem("this is my key for Token", res.data);
+				localStorage.setItem("authToken", res.data);
+				localStorage.setItem("username", data.username);
+				setAuthState({status : true,}); // utilisateur connecté !
 				Navigate("/");
 				console.log("utilisateur connecté !");
+				// console.log(authState);
 			}
 		})
 	}
     return (
         <div className="container">
+			 <Nav/>
 	<div className="screen">
 		<div className="screen__content">
             {/* <div><img className='logoGroupomania' src={logo} alt="" /></div> */}

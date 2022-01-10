@@ -2,11 +2,14 @@ import { useState } from "react";
 import "../styles/Signup.Login.css"
 import { FaUserAlt, FaLock } from "react-icons/fa"; //icon
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Nav from "./Nav";
 
 const Signup = () => {
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const Navigate = useNavigate();
      
  
     const userSubmit = ()=>{
@@ -14,11 +17,13 @@ const Signup = () => {
 		const data = {username:username, password: password}
 		axios.post("http://localhost:3001/auth/signup", data).then(res=>{
 			console.log(res.data);
+			Navigate("/login")
 		})
         
     }
     return (
         <div className="container">
+			<Nav/>
 	<div className="screen">
 		<div className="screen__content">
 			<form className="login">

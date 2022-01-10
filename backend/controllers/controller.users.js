@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { Users } = require("../models");
 const { sign } = require("jsonwebtoken");
+//vérifié si username existe déja dans la BDD, on envoi une erreur, et on récupere cette erreur dans le frontend
 
 exports.signup = (req, res, next)=>{
     console.log(req.body);
@@ -36,9 +37,10 @@ exports.login = async(req,res, next)=>{
            const accesToken = sign( 
              {username: user.username, id: user.id}, "secretToken",{
                  //"TOKEN_SECRET" la clé secrete pour l'encodage
-               expiresIn: "24h",
+               expiresIn: "1h",
               })
            res.json(accesToken)
        })
+       .catch(error =>{ res.status(404).json({error}) })
    })
 }

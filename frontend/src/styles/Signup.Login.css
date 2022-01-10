@@ -24,7 +24,7 @@ h1{
     background: linear-gradient(90deg, #000000, #2285a3a3);	
 	position: relative;	
 	height: 500px;
-	width: 370px;	
+	width: 400px;	
 	box-shadow: 0px 0px 24px #5C5696;
 }
 
@@ -135,6 +135,8 @@ h1{
 .login__submit:focus,
 .login__submit:hover {
 	border-color: #6A679E;
+	background-color: #1d5f7a;
+	color: white;
 	outline: none;
 }
 
@@ -146,4 +148,4 @@ h1{
 
 
 
-*:focus::-webkit-input-placeholder { opacity: 0; transition: 0.2s; }
+*:focus::-webkit-input-placeholder { opacity: 0; transition: 0.2s; };

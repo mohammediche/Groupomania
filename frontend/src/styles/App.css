@@ -10,7 +10,7 @@ body {
   background: linear-gradient(to left, #1c5b75,#1d2f64);
 }
 a{
-  color: black;
+  color: #fff;
   text-decoration: none;
 }
 /* nav */
@@ -61,3 +61,5 @@ a{
 	font-size: 27px;
 	padding-right: 5px;
 }
+
+

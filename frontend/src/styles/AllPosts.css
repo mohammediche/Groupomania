@@ -37,7 +37,7 @@ hr {
   object-fit: cover;
   box-shadow: 2px 1px 8px #cdcaca;
 }
-.username-profil {
+.username-post {
   display: flex;
   align-items: center;
   padding-left: 5px;
@@ -49,7 +49,7 @@ hr {
 /* boutons like, commentaires et modifié */
 .like-comments-pen{
   display: flex;
-    align-items: end;
+    align-items: flex-end;
     justify-content: space-between;
 }
 .buttons-like-comments {
@@ -60,11 +60,11 @@ hr {
 .icon-like{
   padding-right: 20px!important;
 }
-#icon-like-active{
+.icon-like-active{
   padding-right: 20px!important;
   color: #33cbe5!important;
 }
-.icons {
+#icons {
   font-size: 25px;
   padding: 7px;
   border: none;
@@ -72,8 +72,8 @@ hr {
   color: #fff;
   transition: 0.2s;
 }
-.icons:hover,
-.icons:active {
+#icons:hover,
+#icons:active {
   cursor: pointer;
   color: #33cbe5;
 }

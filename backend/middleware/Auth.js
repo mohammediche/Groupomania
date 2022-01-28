@@ -5,13 +5,14 @@ const jwt = require("jsonwebtoken");
 // exporter un middleware
 module.exports = (req, res, next) => {
   const accessToken = req.header("accessToken"); //"accessToken" qu'on utilisera dans le front-end Comments.js
+  // const accessToken = req.headers.authorization.split(" ")[1];
   if(!accessToken){
     return res.json({error : "Utilisateur non authentifié"})
   }
   try {
-    const validToken = jwt.verify(accessToken, "secretToken") //"secretToken" = clé secrete
+    const validToken = jwt.verify(accessToken, process.env.TOKEN_SECRET) //"TOKEN_SECRET" = clé secrete
     
-    req.user = validToken; 
+    req.user = validToken;  // validToken correspond à username, id et role  du user connect !
 
     if(validToken){ 
       return next()

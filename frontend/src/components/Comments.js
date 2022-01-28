@@ -29,7 +29,7 @@ const Comments = () => {
         }, 
         {
           headers:{
-            accessToken: localStorage.getItem("authToken") //on passe le key de notre localStorage
+            accessToken: localStorage.getItem("autorisationToken") //on passe le key de notre localStorage
           }
         }
         )
@@ -50,14 +50,15 @@ const Comments = () => {
       }
       // Delete comment
       const deleteComment = (id) =>{
+  
         axios.delete(`http://localhost:3001/comments/${id}`, {
           headers:{
-            accessToken : localStorage.getItem("authToken")
+            accessToken : localStorage.getItem("autorisationToken")
           }
         })
         .then(()=>{ 
           setComments(Comments.filter((comment)=>{ //pour supprimer le commentaire sans refresh la page.
-            return comment.id != id; 
+            return comment.id !== id; 
           }))
         })
         .catch(error => console.log("erreur lors de la requete deleteComment"+ error));
@@ -69,7 +70,7 @@ const Comments = () => {
         <div className='commentaires'>
         <article>
                <div className="div-add-comment">
-                  <img className="image-profil-comment" src={"https://www.telerama.fr/sites/tr_master/files/styles/simplecrop1000/public/medias/2015/04/media_126061/call-of-duty-retour-sur-l-histoire-mouvementee-d-une-des-saga-les-plus-populaires-du-jeu-video%2CM217573.jpg?itok=4BONQD39"}/>
+                  <img alt="profil" className="image-profil-comment" src={"https://www.telerama.fr/sites/tr_master/files/styles/simplecrop1000/public/medias/2015/04/media_126061/call-of-duty-retour-sur-l-histoire-mouvementee-d-une-des-saga-les-plus-populaires-du-jeu-video%2CM217573.jpg?itok=4BONQD39"}/>
                   <input className="input-add-comment"
                     onChange={(e)=>{setSendComment(e.target.value)}} 
                     type="text" placeholder="Ajouter votre commentaire..." 
@@ -86,7 +87,7 @@ const Comments = () => {
                    <div className="display-username-buttonDelete">
                      <strong>{comment.username } :</strong>
                      {/* si le username de l'utilisateur connecté est égale à celui de l'utilisateur du commentaire */}
-                     {authState.username === comment.username && <button className="delete-comment" onClick={()=> {deleteComment(comment.id)} }>Supprimer</button>}
+                     {authState.username === comment.username || authState.role === true ? <button className="delete-comment" onClick={()=> {deleteComment(comment.id)} }>Supprimer</button> :null}
                      {/* {console.log(authState)} */}
                    </div>
                     <p> {comment.commentBody}</p>

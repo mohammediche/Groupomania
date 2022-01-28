@@ -1,25 +1,29 @@
 import React, { useContext, useEffect } from 'react';
 import { BiArrowToLeft } from 'react-icons/bi';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
 import {AuthContext} from "../Helpers/AuthContext"
 import axios from "axios";
 
 const Nav = () => {
-    const {authState, setAuthState} = useContext(AuthContext)
+    const {authState, setAuthState} = useContext(AuthContext);
 
     useEffect(() => {
         
         axios.get("http://localhost:3001/auth/verification", {
             headers:{
-                accessToken: localStorage.getItem("authToken")
+                accessToken: localStorage.getItem("autorisationToken")
             }
         }).then((res)=>{
             if (res.data.error) {
-                setAuthState({status : false}); 
+                setAuthState((prev)=>({
+                    ...prev,status: false
+                  })); 
             }else{
                 let username= localStorage.getItem("username");
-                console.log("username: ", username)
-                setAuthState({status : true, username: username});
+                setAuthState((prev)=>({
+                    ...prev,status: true,username
+                    
+                  }));
             }
         })
         .catch()
@@ -28,13 +32,13 @@ const Nav = () => {
     
 
     const logout = ()=>{
-        localStorage.removeItem("authToken");
-        // setAuthState({status : false});
+        localStorage.removeItem("autorisationToken");
+        localStorage.removeItem("username");
         Navigate("/login");
     }
     return (
         <header className="header">
-        <Link className="retour-accueil" to={"/"}>< BiArrowToLeft/>Revenir à l'accueil</Link>
+         { window.location.pathname === "/" ? <Link to={"/"}>Accueil</Link> : <Link className="retour-accueil" to={"/"}>< BiArrowToLeft/>  Revenir à l'accueil</Link>}
         
         <nav className="nav">
         {authState.status ? 

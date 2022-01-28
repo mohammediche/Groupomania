@@ -34,13 +34,57 @@ exports.login = async(req,res, next)=>{
            if(!valid){
                return res.json({error : "le mot de passe ou le username que vous avez entré n'existent pas..."})
            }
-           const accesToken = sign( 
-             {username: user.username, id: user.id}, "secretToken",{
+           const accessToken = sign( 
+             {username: user.username, id: user.id, role: user.role}, process.env.TOKEN_SECRET,{
+              expiresIn: "24h",
+             })
                  //"TOKEN_SECRET" la clé secrete pour l'encodage
-               expiresIn: "1h",
-              })
-           res.json(accesToken)
+              
+           res.json(accessToken) // accessToken correspond à la chaine de caractére du Token
        })
        .catch(error =>{ res.status(404).json({error}) })
    })
 }
+
+exports.profilPage = async(req, res , next)=>{
+  try{
+    const id = req.params.id; //id de l'utilisateur
+    const informationUser = await Users.findByPk(id, {  
+      //ici on exclus le password vu qu'on a pas besoin de l'utiliser au front 
+      //(on l'aura besoin plustard pour edit profil connecté)
+      attributes: {exclude: ["password"] }, //attributes est obligé, ce n'est pas un nom qu'on choisi *
+    });
+    res.status(200).json(informationUser);
+  }catch(error){
+    res.status(404).json({error});
+    console.log("erreur lors de la requete profilPage");
+  }
+
+}
+
+exports.modifyPassword = async (req, res, next) => {
+  try {
+
+    const {oldPassword, newPassword} = req.body; 
+    const user = await Users.findOne({ where : {username: req.user.username} });
+
+    //on compare le password que le user a entré avec celui de BDD  
+    bcrypt.compare(oldPassword, user.password)
+    .then(async(valid)=>{
+      if (!valid) {
+        return res.json({error : "Erreur, le password est incorrect"});
+        // quand c'est erreur 400 c'est avec catch
+        // voir axios handle erreurs     
+      }
+      bcrypt.hash(newPassword, 10).then((hash)=>{
+        //on met a jour le password en mettant le hash qui est le newPassword haché !
+        Users.update({password: hash}, {where : {username: req.user.username}}) ;
+        res.status(201).json("Mot de passe changé avec succés !")
+      })
+    })
+  } catch (error) {
+    res.status(404).json({error});
+    
+  }
+}
+

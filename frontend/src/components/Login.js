@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import {AuthContext} from "../Helpers/AuthContext";
 import Nav from "./Nav";
+import jwt from 'jwt-decode';
 
 // import logo from"../images/logo-black.png"
 
@@ -15,16 +16,29 @@ const Login = () => {
 	const Navigate = useNavigate();
 
 
+
+
 	const submitLogin = ()=>{
+
 		const data = {username:username, password: password}
+
 		axios.post("http://localhost:3001/auth/login", data).then(res=>{
 			// si il y a une erreur parmis ceux qu'on a mis dans le backend, on renvoi une alert erreur.
 			if(res.data.error){
 				alert("erreur, username ou le mot de passe n'existe pas"); 
 			}else{ //sinon, on stock notre token dans notre localStorage
-				localStorage.setItem("authToken", res.data);
+				localStorage.setItem("autorisationToken", res.data);
 				localStorage.setItem("username", data.username);
-				setAuthState({status : true,}); // utilisateur connecté !
+				// console.log(res.data); ca nous renvoi un token, c'est pour ca on doit decoder pour avoir la parti payload du token, header payload et signature qui a besoin du secret token pour l'afficher
+				
+				const tokenDecoded = jwt(res.data);		
+				console.log(tokenDecoded);
+				
+				setAuthState((prev)=>({ 
+					...prev,
+					status: true,
+					role: tokenDecoded.role,
+				  })); // utilisateur connecté !
 				Navigate("/");
 				console.log("utilisateur connecté !");
 				// console.log(authState);

@@ -15,7 +15,8 @@ const Signup = () => {
     const userSubmit = ()=>{
 
 		const data = {username:username, password: password}
-		axios.post("http://localhost:3001/auth/signup", data).then(res=>{
+		axios.post("http://localhost:3001/auth/signup", data)
+		.then(res=>{
 			console.log(res.data);
 			Navigate("/login")
 		})

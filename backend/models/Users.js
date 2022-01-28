@@ -24,12 +24,23 @@ module.exports = (sequelize, DataTypes) => {
         // }
       },
 
+      role: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,      
+      },
+
     });
     
      Users.associate = (models)=>{
+       //un user a plusieurs likes
+       //un user peut likes plusieurs posts
        Users.hasMany(models.Likes, { 
          onDelete : "cascade",
-       }) 
+       });
+       Users.hasMany(models.Posts, { 
+        onDelete : "cascade",
+      });
+   
      }
   
     return Users;

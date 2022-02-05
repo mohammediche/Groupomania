@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,      
       },
 
+      // imageProfil: {
+      //   type: DataTypes.STRING,
+      //   defaultValue: "https://static.jobat.be/uploadedImages/grandprofilfb.jpg",      
+      // },
+
     });
     
      Users.associate = (models)=>{

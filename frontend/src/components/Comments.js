@@ -1,21 +1,19 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FiSend } from "react-icons/fi"; //icon
 import "../styles/Post.css"; //css
-import {AuthContext} from "../Helpers/AuthContext"
 
 
 const Comments = () => {
-    const {id} = useParams();
+    const {postId} = useParams();
     const [Comments, setComments] = useState([]); // pour afficher les comments
     const [sendComment, setSendComment] = useState(""); //ajout d'un comm
-    const {authState} = useContext(AuthContext);
 
     useEffect(() => {        
           //récupération des commentaires du post id spécifié
           axios
-          .get(`http://localhost:3001/comments/${id}`)
+          .get(`http://localhost:3001/comments/${postId}`)
           .then((res) => {setComments (res.data); });
 
       }, []);
@@ -25,7 +23,7 @@ const Comments = () => {
         axios.post("http://localhost:3001/comments", 
         {
           commentBody: sendComment, 
-          PostId: id,
+          PostId: postId,
         }, 
         {
           headers:{
@@ -35,17 +33,13 @@ const Comments = () => {
         )
         .then((res)=>{
 
-          if(res.data.error) { // si y a une erreur dans le backend
-            console.log("erreur, l'utilisateur n'est pas authentifié");
-            alert("erreur, Veuillez vous connecter pour pouvoir écrire un commentaire...");
-          } else {
           console.log("comment added !");
+          console.log("ceci est le contenu de mon commentaire :" + res.data.commentBody);
           //Pour plus avoir besoin d'actualiser la page pour voir le commentaire ajouté !
-          const commentToAdd = {commentBody : sendComment, username : res.data.username, id: res.data.PostId }; //username se trouve déja dans la BDD. Voir backend Auth et controllerComments.
-          console.log(res.data);
+          const commentToAdd = {commentBody : sendComment, username : res.data.username, id: res.data.id }; //username se trouve déja dans la BDD. Voir backend Auth et controllerComments.
           setComments([...Comments, commentToAdd]);
           setSendComment("");
-        }
+     
         })
       }
       // Delete comment
@@ -71,11 +65,12 @@ const Comments = () => {
         <article>
                <div className="div-add-comment">
                   <img alt="profil" className="image-profil-comment" src={"https://www.telerama.fr/sites/tr_master/files/styles/simplecrop1000/public/medias/2015/04/media_126061/call-of-duty-retour-sur-l-histoire-mouvementee-d-une-des-saga-les-plus-populaires-du-jeu-video%2CM217573.jpg?itok=4BONQD39"}/>
-                  <input className="input-add-comment"
+                  <input className="input-add-comment" required
                     onChange={(e)=>{setSendComment(e.target.value)}} 
-                    type="text" placeholder="Ajouter votre commentaire..." 
+                    type="text"
+                    placeholder="Ajouter votre commentaire..." 
                     value={sendComment}/>
-                  <button className="send-comment" onClick={addComment} type="submit"><FiSend/></button>
+                  <button className="send-comment" onClick={addComment} type="submit" aria-label="publier votre commentaire" title="publier votre commentaire ?"><FiSend/></button>
                </div>
 
             {/* On affiche les commentaires */}
@@ -87,7 +82,7 @@ const Comments = () => {
                    <div className="display-username-buttonDelete">
                      <strong>{comment.username } :</strong>
                      {/* si le username de l'utilisateur connecté est égale à celui de l'utilisateur du commentaire */}
-                     {authState.username === comment.username || authState.role === true ? <button className="delete-comment" onClick={()=> {deleteComment(comment.id)} }>Supprimer</button> :null}
+                     {localStorage.getItem("username") === comment.username || localStorage.getItem("Role" === true) ? <button className="delete-comment" onClick={()=> {deleteComment(comment.id)} }>Supprimer</button> :null}
                      {/* {console.log(authState)} */}
                    </div>
                     <p> {comment.commentBody}</p>

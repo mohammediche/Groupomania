@@ -3,16 +3,28 @@ const { Comments } = require("../models");
 
 exports.createComment = async (req, res, next)=>{
     try {
-        const CommentBody = req.body;
-        //pour ajouter le username  du l'utilisateur dans la BDD, pour afficher dans les comm
-        const username = req.user.username;
-        CommentBody.username = username;
-        //fin
-        await Comments.create(CommentBody);
-        res.json(CommentBody);
-      } catch (error) {
-        res.status(404).json({ error });
-        console.log("erreur lors de la requete createComment", error);
+           const CommentBody = req.body;
+
+           //pour ajouter le username  du l'utilisateur dans la BDD, pour afficher dans les comm
+           const username = req.user.username;
+           CommentBody.username = username;
+           
+            
+           //fin
+
+            const comments = await Comments.create(CommentBody);
+            console.log(req.body.commentBody);
+            if (req.body.commentBody === null) {
+              res.status(400).json({error : "veuillez remplir le champ du commentaire..."})         
+            }else{
+              res.json(comments);
+            }
+
+        
+          
+    }  catch (error) {
+           res.status(404).json({ error });
+           console.log("erreur lors de la requete createComment", error);
       }
 }
 exports.getOnePostComments = async(req, res, next)=>{

@@ -1,45 +1,56 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/AllPosts.css";
 import { BiCommentDetail } from "react-icons/bi"; //icon
 import { AiOutlineLike } from "react-icons/ai"; //icon
 import { MdEdit } from "react-icons/md"; //icon
-import {AuthContext} from "../Helpers/AuthContext";
 import moment from "moment";
 import "moment/locale/fr";
+import CreatePost from "./CreatePost";
 
 const AllPosts = () => {
   const Navigate = useNavigate();
   
   const [allPost, setallPost] = useState([]);
   const [likedPostsUserConnect, setlikedPostsUserConnect] = useState([]);
-  const {authState} = useContext(AuthContext);
 
   useEffect(() => {
-    
-    axios
-      .get("http://localhost:3001/posts", 
-      {
-        headers:{
-        accessToken: localStorage.getItem("autorisationToken")
-        // Authorization : `bearer ${REACT_APP_MYKEY_LOCALSTORAGE}`
-       }
-      }
-    )
-      .then((res) => {
-        setallPost(res.data.allPost);
-        //on map pour prendre uniquement le PostId au lieu du post entier
-        setlikedPostsUserConnect(res.data.likedPostsUserConnect.map((like)=>{ 
-          return like.PostId; 
-        })
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    
+    getAllPosts();
+ 
   }, []);
+
+
+  const getAllPosts = ()=>{
+    axios
+    .get("http://localhost:3001/posts", 
+    {
+      headers:{
+      accessToken: localStorage.getItem("autorisationToken")
+      // Authorization : `bearer ${REACT_APP_MYKEY_LOCALSTORAGE}`
+     }
+    }
+  )
+    .then((res) => {
+      setallPost(res.data.allPost);
+      //on map pour prendre uniquement le PostId au lieu du post entier
+      setlikedPostsUserConnect(res.data.likedPostsUserConnect.map((like)=>{ 
+        return like.PostId; 
+      })
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+
+  const gerePostAjout = (newPost)=>{
+    // setallPost((prev)=>([...prev, newPost]))
+    getAllPosts()
+    console.log("====>");
+    console.log(newPost);
+  }
    
   const LikePost = (postId)=>{
     axios.post("http://localhost:3001/likes", 
@@ -93,6 +104,8 @@ const AllPosts = () => {
 
 
   return (
+    
+    <><CreatePost gerePostAjout= {gerePostAjout}/> {/* on appelle notre fonction de au dessus */}
     <main className="App">
       {allPost.map((MyPost, key) => {
         return (
@@ -115,7 +128,7 @@ const AllPosts = () => {
 
             <hr />
             <div className="post-text">
-              <img src={MyPost.image} alt="couverture publication" />
+              <img className="imagePost" src={MyPost.image} alt="contenu visuel de la publication" />
               <h2 className="name-profil">{MyPost.title}</h2>
               <p>{MyPost.postText}</p>
             </div>
@@ -126,6 +139,7 @@ const AllPosts = () => {
              
               {MyPost.Likes.length === 0 ? null : <label>{MyPost.Likes.length}</label>} 
               <button 
+              aria-label="like"
                 id="icons" 
                 onClick={()=> {LikePost(MyPost.id)}} 
                 className={
@@ -135,8 +149,9 @@ const AllPosts = () => {
             
                 <button
                  className="icon-comments"
+                 aria-label="accéder au post en détail"
                  id="icons"
-                 title="Lire ou Ajouter un commentaire..."
+                 title="accéder au post en détail"
                  onClick={()=>{Navigate(`/post/${MyPost.id}`)}}>
                  <BiCommentDetail />
                 </button>
@@ -144,8 +159,8 @@ const AllPosts = () => {
               </div>
             
               <div className="editButton">
-                 {authState.username === MyPost.username || authState.role === true ? <button onClick={()=>{Navigate(`/post/${MyPost.id}`)}}><MdEdit /></button>: null}   {/* lien avec l'id à faire */}
-                 {console.log(authState)}   
+                 {localStorage.getItem("username") === MyPost.username || localStorage.getItem("Role" === true) ? <button onClick={()=>{Navigate(`/post/${MyPost.id}`)}} aria-label="accéder au post en détail" title="accéder au post en détail"><MdEdit /></button>: null}   {/* lien avec l'id à faire */}
+                 
               </div>
               
             </div>
@@ -153,6 +168,7 @@ const AllPosts = () => {
         );
       })}
     </main>
+    </>
   );
 };
 

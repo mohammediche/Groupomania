@@ -24,5 +24,8 @@ const storage = multer.diskStorage ({
     }
 })
 
-module.exports = multer({storage, limits: {fileSize: "1000000"}}).single("image"); //fileSize en octet donc 1mo
+module.exports = multer({storage}).single("image"); 
+// limits: {fileSize: "1000000"}
+//fileSize en octet donc 1mo
+//fileFilter: imageFilter
 // appeler la methode single pour dire que c'est un fichier unique et pas un groupe de fichiers

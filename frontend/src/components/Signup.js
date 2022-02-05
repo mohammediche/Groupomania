@@ -37,7 +37,7 @@ const Signup = () => {
                 <FaLock/>
 					<input onChange={(e)=>{setPassword(e.target.value)}} value={password} type="password" className="login__input" placeholder="Password" required/>
 				</div>
-					<button onClick={userSubmit} type='button' className="button login__submit">S'inscrire</button>         
+					<button onClick={userSubmit} type='button' className="button login__submit" aria-label="s'inscrire" title="s'inscrire">S'inscrire</button>         
 			</form>
 		</div>
 		<div className="screen__background">

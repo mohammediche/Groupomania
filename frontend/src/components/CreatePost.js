@@ -2,15 +2,22 @@
 import axios from "axios";
 import { useState, useContext } from "react";
 import "../styles/CreatePost.css";
-import {AuthContext} from "../Helpers/AuthContext";
+import {AuthContext} from "../Helpers/AuthContext"; 
+import { FiUpload } from "react-icons/fi"; //icon
 
-const CreatePost = () => {
+const CreatePost = (props) => {
+
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
-  const {authState} = useContext(AuthContext);
   const [image, setImage] = useState("");
+  const {authState} = useContext(AuthContext);
 
-  const postSubmit = () => {
+  
+
+
+  const postSubmit = (e) => {
+    e.preventDefault();
+ 
 
     // const posts = { title, postText };
     const formData = new FormData();
@@ -25,14 +32,17 @@ const CreatePost = () => {
       }
     })
     .then((res) => {
-      if (res.data.error) {
-        alert("Erreur, Vous devez etre connecté pour pouvoir publié !");
-        console.log("Erreur, Vous devez etre connecté pour pouvoir publié !");
-        
-      } else {
-        console.log("Post added !");
 
-      }
+        console.log("Post added !", res.data);  
+        console.log(formData);
+          
+
+        const postToAdd = {title : res.data.title, postText: res.data.postText, image: res.data.image, Likes: [],  id : res.data.id};
+          props.gerePostAjout(postToAdd) // ramener les données directement avec res.data tester ca
+          setTitle("");
+          setPostText("");
+          setImage("");
+           
     })
     .catch(Error => {console.log("erreur lors de la création du post"+Error);})
   };
@@ -46,10 +56,14 @@ const CreatePost = () => {
 
         <input autoFocus className="sous-form input-title" placeholder="Votre titre..." required onChange={(e) => { setTitle(e.target.value);}}id="espace-title"type="text"value={title}/>        
         <textarea className="sous-form textarea" placeholder="Quoi de neuf?" required onChange={(e) => {setPostText(e.target.value);}}type="text"value={postText}/>
-        <input type="file" name="image" onChange={(e)=>{setImage(e.target.files[0]) }}/>
+        {/* <input type="file" name="image" onChange={(e)=>{setImage(e.target.files[0]) }}/> */}
+        <input className="uploadImageInput" type="file" id="file" name="image" onChange={(e)=>{setImage(e.target.files[0]) }}/>
+          <label htmlFor="file" className="btn-3">
+          <span><FiUpload /></span>
+          </label>
 
          <div className="div-button-publier">
-          <button>Publier </button>
+          <button title="publier le post ?" style={{textAlign : "center" }}>Publier </button>
          </div>
       </form>
     </div>

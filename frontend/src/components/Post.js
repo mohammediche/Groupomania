@@ -1,23 +1,23 @@
 import Comments from "./Comments"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { MdDelete, MdEdit } from "react-icons/md"; //icon
 import Nav from "./Nav";
+import moment from "moment";
+import "moment/locale/fr";
 import "../styles/Post.css";
-import {AuthContext} from "../Helpers/AuthContext";
 
 
 const Post = () => {
-    const {id} = useParams();
+    const {postId} = useParams();
     const Navigate = useNavigate();
     const [PostData, setaPostData] = useState([]);
-    const {authState} = useContext(AuthContext);
     
     useEffect(() => {
 
         axios
-          .get(`http://localhost:3001/posts/byId/${id}`)
+          .get(`http://localhost:3001/posts/byId/${postId}`)
           .then((res) => {
             setaPostData(res.data);
             
@@ -28,7 +28,7 @@ const Post = () => {
        
       // supprime Un post
       const deleteOne = ()=>{
-        axios.delete(`http://localhost:3001/posts/byId/${id}`)
+        axios.delete(`http://localhost:3001/posts/byId/${postId}`)
         .then((res)=>{
           Navigate("/")
         })
@@ -51,19 +51,20 @@ const Post = () => {
             <p className="username-post">{PostData.username}</p>
           </span>
           </Link>
-          <p> 5mn</p>
+          <p> {moment(PostData.updatedAt).fromNow()}</p>
         </div>
 
         <hr />
         <div className="post-text">
+          <img style={{width : 100 + "%"}} src={PostData.image}></img>
           <h2 className="name-profil">{PostData.title}</h2>
           <p>{PostData.postText}</p>
         </div>
-        {/* buttons like et comments */}
+        {/* buttons delete et edit */}
           <div>
               <div className="deleteEditButton">
-                { authState.username === PostData.username || authState.role === true ? <button onClick={()=>{ if (window.confirm('êtes-vous sûr de vouloir supprimer votre post ?')) return deleteOne() } } > <MdDelete/> </button> :null}
-                { authState.username === PostData.username && <button onClick={()=>{Navigate(`/edit-post/${PostData.id}`)}} > <MdEdit/> </button> }
+                { localStorage.getItem("username") === PostData.username || localStorage.getItem("Role" === true) ? <button onClick={()=>{ if (window.confirm('êtes-vous sûr de vouloir supprimer votre post ?')) return deleteOne() } } > <MdDelete/> </button> :null}
+                { localStorage.getItem("username") === PostData.username && <button onClick={()=>{Navigate(`/edit-post/${PostData.id}`)}} aria-label="modifié le contenu du post ?" title="modifié le contenu du post ?"> <MdEdit/> </button> }
                 
               </div>           
           </div>

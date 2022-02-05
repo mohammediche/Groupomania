@@ -1,6 +1,7 @@
 hr {
   opacity: 0.4;
 }
+
 .CreatePost-AllPosts,
 .accueil-content-post{
   position: relative;
@@ -20,6 +21,13 @@ hr {
   color: #fff;
   background: rgb(0,0,0);
   background: linear-gradient(0deg, rgb(0 0 0 / 30%) 0%, rgb(27 32 32 / 43%) 100%);
+}
+/* imagePost */
+.imagePost{
+  width: 80%;
+  height: auto;
+    margin-left: 65px;
+    box-shadow: 0px 3px 10px #605f5feb;
 }
 .display-flex {
   display: flex;

@@ -105,10 +105,10 @@
   }
   .list-of-comments{
     overflow: scroll;
-      height: 220px;
-      padding: 8px;
+    height: 300px;
+    padding: 8px;
+    box-shadow: 0px 2px 0px #ffffff3b;
   }
-  
   
   /****************    deuxiéme partie pour la page Post.js  (commentaire)    *****************/
   .div-add-comment{

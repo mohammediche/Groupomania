@@ -87,4 +87,16 @@ exports.modifyPassword = async (req, res, next) => {
     
   }
 }
+exports.deleteUser = (req, res, next) =>{
+  const userId = req.params.userId; // id de l'utilisateur / qu'on mettera également dans l'url de notre route
+
+  Users.findOne( {where: {id : userId} }) // id c'est l'id de la BDD et userId et l'id qu'on va lui attribuer
+  .then((user)=>{
+    user.destroy({where: {id : userId} })
+    res.status(200).json( {message : "Utilisateur supprimé"} );
+  })
+
+  .catch(error => res.status(400).json({error : error}));
+
+}
 

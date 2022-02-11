@@ -1,13 +1,13 @@
 import React from 'react';
-import AllPosts from "./AllPosts"
-import Nav from './Nav';
+import AllPosts from "../components/AllPosts"
+import Nav from '../components/Nav';
 
 
 const Home = () => {
     return (
         <div className='CreatePost-AllPosts'>
-            <Nav/>
-            <AllPosts />
+              <Nav/>
+              <AllPosts />
         </div>
     );
 };

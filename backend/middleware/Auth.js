@@ -10,11 +10,11 @@ module.exports = (req, res, next) => {
     return res.json({error : "Utilisateur non authentifié"})
   }
   try {
-    const validToken = jwt.verify(accessToken, process.env.TOKEN_SECRET) //"TOKEN_SECRET" = clé secrete
+    const userDataFromToken = jwt.verify(accessToken, process.env.TOKEN_SECRET) //"TOKEN_SECRET" = clé secrete
     
-    req.user = validToken;  // validToken correspond à username, id et role  du user connect !
+    req.user = userDataFromToken;  // userDataFromToken correspond à username, id et role  du user connect !
 
-    if(validToken){ 
+    if(userDataFromToken){ 
       return next()
     }
   

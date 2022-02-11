@@ -9,7 +9,6 @@ exports.doLike = async(req, res, next)=>{
             where: { PostId:PostId, UserId: UserId }
         })
         if (!LikeExist) {
-            // await Likes.create(PostId,UserId);
             await Likes.create({ PostId:PostId, UserId: UserId })
             res.status(201).json({Liked: true});
         } else {

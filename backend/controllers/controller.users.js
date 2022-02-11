@@ -51,10 +51,9 @@ exports.profilPage = async(req, res , next)=>{
     const id = req.params.id; //id de l'utilisateur
     const informationUser = await Users.findByPk(id, {  
       //ici on exclus le password vu qu'on a pas besoin de l'utiliser au front 
-      //(on l'aura besoin plustard pour edit profil connecté)
       attributes: {exclude: ["password"] }, //attributes est obligé, ce n'est pas un nom qu'on choisi *
     });
-    res.status(200).json(informationUser);
+    res.status(200).json(informationUser); //informationUser = [ 'id', 'username', 'role', 'createdAt', 'updatedAt' ]
   }catch(error){
     res.status(404).json({error});
     console.log("erreur lors de la requete profilPage");
@@ -66,6 +65,7 @@ exports.modifyPassword = async (req, res, next) => {
   try {
 
     const {oldPassword, newPassword} = req.body; 
+    console.log("ceci est mooooon ", req.body);
     const user = await Users.findOne({ where : {username: req.user.username} });
 
     //on compare le password que le user a entré avec celui de BDD  
@@ -87,8 +87,10 @@ exports.modifyPassword = async (req, res, next) => {
     
   }
 }
+// suppression de son propre compte
 exports.deleteUser = (req, res, next) =>{
-  const userId = req.params.userId; // id de l'utilisateur / qu'on mettera également dans l'url de notre route
+  //ramener l'id du token
+  const userId = req.user.id; // id de l'utilisateur qui vient du token
 
   Users.findOne( {where: {id : userId} }) // id c'est l'id de la BDD et userId et l'id qu'on va lui attribuer
   .then((user)=>{
@@ -96,7 +98,29 @@ exports.deleteUser = (req, res, next) =>{
     res.status(200).json( {message : "Utilisateur supprimé"} );
   })
 
-  .catch(error => res.status(400).json({error : error}));
+  .catch(error =>{
+     console.log(error);
+     res.status(400).json({error : error}) 
+
+    })
 
 }
 
+// suppression de n'importe quel compte (seul l'admin peut réaliser ca)
+exports.deleteAnyUser = (req, res, next) =>{
+
+    const userId = req.params.userId; //  supprimer pour admin / qu'on mettera également dans l'url de notre route
+    console.log(userId);
+
+    Users.findOne({where : {id: userId} })
+    .then((user) => {
+      user.destroy({ where: {id: userId} })
+      res.status(200).json({message : "Utilisateur supprimé avec succés !"})
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(400).json({error : "erreur lors de la suppression du compte..." + error}) 
+    })
+
+
+}

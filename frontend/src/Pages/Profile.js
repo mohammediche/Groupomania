@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../styles/Profile.css";
-import Nav from './Nav';
+import Nav from '../components/Nav';
 import {useNavigate, useParams} from "react-router-dom";
 import axios from 'axios';
 import { BiCommentDetail } from "react-icons/bi"; //icon
@@ -8,10 +8,10 @@ import moment from "moment";
 import "moment/locale/fr";
 
 
+
 const Profile = () => {
   const Navigate = useNavigate();
   const {id} = useParams();
-  console.log(id);
 
   const [username, setUsername] = useState("");
   const [PostsOfUser, setPostsOfUser] = useState([]);
@@ -20,9 +20,10 @@ const Profile = () => {
   const [show, setShow] = useState(false);
 
 
+
   useEffect(() => {
 
-    axios.get(`http://localhost:3001/auth/profil/${id}`)
+    axios.get(`http://localhost:3001/auth/profil/${id}`) // supprimer ceci et prendre le username depuis localstroage
     .then((res)=>{ 
       setUsername(res.data.username); 
     })
@@ -35,8 +36,7 @@ const Profile = () => {
     })
     .catch(error => console.log(error));
 
-  },
-  [])
+  },[])
 
   const modifyPassword = (e)=>{
     e.preventDefault();
@@ -67,17 +67,21 @@ const Profile = () => {
   } 
 
    // suppression d'un utilisateur
-   const deleteUser = ()=>{
-
-    axios.delete(`http://localhost:3001/auth/deleteUser/${id}`, {
+   const deleteAnyUser = ()=>{
+   
+    axios.delete(`http://localhost:3001/auth/deleteAnyUser/${id}`, {
         headers:{
             accessToken: localStorage.getItem("autorisationToken")
-           
            }
     })
     .then((res) =>{
-        localStorage.clear();
-        Navigate("/signup");
+      if (localStorage.getItem("Role") === "true") {
+        
+        
+      }
+      // utilisateur supprimé
+       console.log(res.data.message);
+        Navigate("/");
     })
     .catch(error => console.log("Erreur lors de la suppression du compte..." + error))
 }
@@ -89,34 +93,32 @@ const Profile = () => {
 
     return (
         <div className='container-profil'>
+ 
           <div className='header-profilPage'>< Nav/></div>
  <div className="card">
       <div className="img-bx">
         <img src="https://i.postimg.cc/dQ7zWbS5/img-4.jpg" alt="profil" />
       </div>
-      <div className="content">
-            <div className="detail">
+      <div className="content" style={{width: "450" +"px"}}>
+             <div className="detail">
                <h2 className='username-profil'>{username}</h2>
-               <p className='bio-profil'>ici la bio Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat, quidem! Rem repellendus nam quos inventore, minima animi, quibusdam debitis nobis neque accusantium quae sint aliquid soluta id molestias maxime! Natus?</p> 
              </div>
 
-             {localStorage.getItem("username") === username || localStorage.getItem("Role" === true)
-               ? 
+             {localStorage.getItem("username") === username || localStorage.getItem("Role")  === "true"? 
+
             <div className='editPassword'>
-
-                <button className='buttonsProfil' onClick={()=>{setShow(!show)}}>Modifier votre mot de passe</button>
-                <button onClick={()=> { if (window.confirm("Attention la suppression du compte est définitif, vous ne pourrez plus vous y connecter, étes-vous sur de vouloir supprimer votre compte?")) return deleteUser() }}>Supprimer Mon compte</button>
-               
+                <button className='buttonsProfil' onClick={()=>{setShow(!show)}}>Modifier votre mot de passe</button>          
             </div>
-            :null} 
+            :null}   
 
-           {localStorage.getItem("username")  === username || localStorage.getItem("Role" === true) ? show &&
+           {localStorage.getItem("username")  === username || localStorage.getItem("Role") === "true" ? show &&
              <form className='disabled-input'>
                 <input required className='usernameExist' type="text" onChange={(e)=> {setoldPassword(e.target.value)}}   placeholder='Votre mot de passe actuel'/> 
                 <input required className='passwordExist' type="password" onChange={(e)=> {setnewPassword(e.target.value)}}  placeholder='Votre Nouveau mot de passe...'/>
                 <button className='buttonsProfil'  onClick={modifyPassword}>Valider</button>
              </form>
            :null}
+            {localStorage.getItem("Role")  === "true"? <button className='admin-deleteCompte' onClick={ deleteAnyUser }>Supprimer ce compte</button>: null }
       </div>
     </div>
 
@@ -148,8 +150,7 @@ const Profile = () => {
               <div className="buttons-like-comments">
 
                 <button
-                 className="icon-comments"
-                 id="icons"
+                 className="icons icon-comments"
                  title="Lire ou Ajouter un commentaire..."
                  onClick={()=>{Navigate(`/post/${MyPost.id}`)}}>
                  <BiCommentDetail />

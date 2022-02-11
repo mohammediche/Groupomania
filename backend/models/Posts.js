@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     image: {
       //colum
       type: DataTypes.STRING,
-      allowNul: false,
     },
   });
   // fonction pour associé la table posts à comments //chaque post a ses propres commentaire

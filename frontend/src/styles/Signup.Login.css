@@ -78,6 +78,17 @@ h1{
 	border-radius: 32px;
 }
 
+.signup{
+    color: #23e7e7;
+    border: 2px solid #23e7e7;
+    transition: .3s;
+    padding: 8px 20px;
+}
+.signup:hover{
+  background-color: #23e7e7;
+  color: black!important;
+}
+
 
 .login {
 	width: 320px;

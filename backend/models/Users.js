@@ -39,10 +39,14 @@ module.exports = (sequelize, DataTypes) => {
      Users.associate = (models)=>{
        //un user a plusieurs likes
        //un user peut likes plusieurs posts
+       //un user peut avoir plusieurs commentaires
        Users.hasMany(models.Likes, { 
          onDelete : "cascade",
        });
        Users.hasMany(models.Posts, { 
+        onDelete : "cascade",
+      });
+      Users.hasMany(models.Comments, { 
         onDelete : "cascade",
       });
    

@@ -1,24 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Signup.Login.css"
 import { FaUserAlt, FaLock } from "react-icons/fa"; //icon
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Nav from "./Nav";
+import Nav from "../components/Nav";
 
 const Signup = () => {
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const Navigate = useNavigate();
+
      
  
     const userSubmit = ()=>{
 
 		const data = {username:username, password: password}
 		axios.post("http://localhost:3001/auth/signup", data)
+		
 		.then(res=>{
-			console.log(res.data);
-			Navigate("/login")
+				console.log(res.data);
+					Navigate("/login")
+		
+		}).catch((error) =>{
+			console.log(error);
+			alert("votre mot de passe doit contenir : 5 caractères minimum, 1 majuscule, 1 miniscule, sans espace")
 		})
         
     }

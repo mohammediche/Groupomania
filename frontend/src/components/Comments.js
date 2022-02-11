@@ -23,7 +23,7 @@ const Comments = () => {
         axios.post("http://localhost:3001/comments", 
         {
           commentBody: sendComment, 
-          PostId: postId,
+          PostId: postId, // on ajoute le postId ici pour savoir à quel post on ajoute ce commentaire
         }, 
         {
           headers:{
@@ -32,13 +32,18 @@ const Comments = () => {
         }
         )
         .then((res)=>{
-
-          console.log("comment added !");
-          console.log("ceci est le contenu de mon commentaire :" + res.data.commentBody);
-          //Pour plus avoir besoin d'actualiser la page pour voir le commentaire ajouté !
-          const commentToAdd = {commentBody : sendComment, username : res.data.username, id: res.data.id }; //username se trouve déja dans la BDD. Voir backend Auth et controllerComments.
-          setComments([...Comments, commentToAdd]);
-          setSendComment("");
+          if (res.data.commentBody === "") {
+          console.log("erreuuuuur");
+                   
+          } else {
+              
+            console.log("comment added !");
+            // console.log("ceci est le contenu de mon commentaire :" + res.data.commentBody);
+            //Pour plus avoir besoin d'actualiser la page pour voir le commentaire ajouté !
+            const commentToAdd = {commentBody : sendComment, username : res.data.username, id: res.data.id,  }; //username se trouve déja dans la BDD. Voir backend Auth et controllerComments.
+            setComments([...Comments, commentToAdd]);
+            setSendComment("");
+          }
      
         })
       }
@@ -82,7 +87,7 @@ const Comments = () => {
                    <div className="display-username-buttonDelete">
                      <strong>{comment.username } :</strong>
                      {/* si le username de l'utilisateur connecté est égale à celui de l'utilisateur du commentaire */}
-                     {localStorage.getItem("username") === comment.username || localStorage.getItem("Role" === true) ? <button className="delete-comment" onClick={()=> {deleteComment(comment.id)} }>Supprimer</button> :null}
+                     {localStorage.getItem("username") === comment.username || localStorage.getItem("Role")  === "true"? <button className="delete-comment" onClick={()=> {deleteComment(comment.id)} }>Supprimer</button> :null}
                      {/* {console.log(authState)} */}
                    </div>
                     <p> {comment.commentBody}</p>

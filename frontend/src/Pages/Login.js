@@ -1,10 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import "../styles/Signup.Login.css"
 import { FaUserAlt, FaLock } from "react-icons/fa"; //icon
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-// import {AuthContext} from "../Helpers/AuthContext";
-import Nav from "./Nav";
+import Nav from "../components/Nav";
 import jwt from 'jwt-decode';
 
 // import logo from"../images/logo-black.png"

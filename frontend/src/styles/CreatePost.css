@@ -58,30 +58,6 @@
 }
 
 /* upload image */
-.uploadImageInput {
-    height: 0;
-    overflow: hidden;
-    width: 0;
-  }
   
- .btn-3 {
-     width: 18%;
-    /* background: #f15d22; */
-    background: #248c45;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer; 
-    margin: 1rem 0 1rem 11px;
 
-    outline: none;
-    padding: 10px 0px;
-    text-align: center;
-    transition: all 0.3s;
-   
-    
- }
- .btn-3:hover {
-    background-color: #1a6a34;
-  }
   

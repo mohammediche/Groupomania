@@ -1,9 +1,9 @@
-import Comments from "./Comments"
+import Comments from "../components/Comments"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { MdDelete, MdEdit } from "react-icons/md"; //icon
-import Nav from "./Nav";
+import Nav from "../components/Nav";
 import moment from "moment";
 import "moment/locale/fr";
 import "../styles/Post.css";
@@ -37,6 +37,7 @@ const Post = () => {
 
     return (
       <section className="content-post"> 
+
       <Nav/>
       <div className="left-post">        
         <div className="display-flex">
@@ -44,6 +45,7 @@ const Post = () => {
           <span className="display-block">
             <img
               className="image-profil"
+              alt="photo de profil"
               src={
                 "https://static.jobat.be/uploadedImages/grandprofilfb.jpg"
               }
@@ -56,14 +58,14 @@ const Post = () => {
 
         <hr />
         <div className="post-text">
-          <img style={{width : 100 + "%"}} src={PostData.image}></img>
+          <img alt="contenu du post" style={{width : 100 + "%"}} src={PostData.image}></img>
           <h2 className="name-profil">{PostData.title}</h2>
           <p>{PostData.postText}</p>
         </div>
         {/* buttons delete et edit */}
           <div>
               <div className="deleteEditButton">
-                { localStorage.getItem("username") === PostData.username || localStorage.getItem("Role" === true) ? <button onClick={()=>{ if (window.confirm('êtes-vous sûr de vouloir supprimer votre post ?')) return deleteOne() } } > <MdDelete/> </button> :null}
+                { localStorage.getItem("username") === PostData.username || localStorage.getItem("Role")  === "true" ? <button aria-label="supprimer le post" onClick={()=>{ if (window.confirm('êtes-vous sûr de vouloir supprimer votre post ?')) return deleteOne() } } > <MdDelete/> </button> :null}
                 { localStorage.getItem("username") === PostData.username && <button onClick={()=>{Navigate(`/edit-post/${PostData.id}`)}} aria-label="modifié le contenu du post ?" title="modifié le contenu du post ?"> <MdEdit/> </button> }
                 
               </div>           

@@ -22,9 +22,29 @@ const storage = multer.diskStorage ({
         const extension = MIME_TYPE[file.mimetype];
         callback(null, name + Date.now() + "." + extension); 
     }
+    
 })
+const fileFilter = (req, file, cb) => {
 
-module.exports = multer({storage}).single("image"); 
+    const fileSize = parseInt(req.headers['content-length']); //correspond à la taille d'image sélectionné
+    console.log("============>", fileSize);
+    
+    if((file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/gif' || file.mimetype === 'application/octet-stream') && (fileSize <= 1500000)) {
+    
+    cb(null, true);
+    
+    }         
+    else {       
+    cb(null, false);   
+    console.log("erreur, veuillez sélectionné une image qui contient moins de  1000000 Mo");    
+    }
+
+  }
+
+
+
+module.exports = multer({storage, fileFilter}).single("image"); 
+
 // limits: {fileSize: "1000000"}
 //fileSize en octet donc 1mo
 //fileFilter: imageFilter

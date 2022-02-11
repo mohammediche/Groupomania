@@ -48,8 +48,6 @@ const AllPosts = () => {
   const gerePostAjout = (newPost)=>{
     // setallPost((prev)=>([...prev, newPost]))
     getAllPosts()
-    console.log("====>");
-    console.log(newPost);
   }
    
   const LikePost = (postId)=>{
@@ -128,7 +126,7 @@ const AllPosts = () => {
 
             <hr />
             <div className="post-text">
-              <img className="imagePost" src={MyPost.image} alt="contenu visuel de la publication" />
+              {MyPost.image && <img className="imagePost" src={MyPost.image} alt="contenu visuel de la publication" />}
               <h2 className="name-profil">{MyPost.title}</h2>
               <p>{MyPost.postText}</p>
             </div>
@@ -140,17 +138,17 @@ const AllPosts = () => {
               {MyPost.Likes.length === 0 ? null : <label>{MyPost.Likes.length}</label>} 
               <button 
               aria-label="like"
-                id="icons" 
+     
                 onClick={()=> {LikePost(MyPost.id)}} 
                 className={
-                   likedPostsUserConnect.includes(MyPost.id) ? "icon-like-active" : "icon-like"
+                   likedPostsUserConnect.includes(MyPost.id) ? "icons icon-like-active" : "icons icon-like"
                   }> <AiOutlineLike />
               </button>
             
                 <button
-                 className="icon-comments"
+                 className="icons icon-comments"
                  aria-label="accéder au post en détail"
-                 id="icons"
+             
                  title="accéder au post en détail"
                  onClick={()=>{Navigate(`/post/${MyPost.id}`)}}>
                  <BiCommentDetail />
@@ -159,7 +157,7 @@ const AllPosts = () => {
               </div>
             
               <div className="editButton">
-                 {localStorage.getItem("username") === MyPost.username || localStorage.getItem("Role" === true) ? <button onClick={()=>{Navigate(`/post/${MyPost.id}`)}} aria-label="accéder au post en détail" title="accéder au post en détail"><MdEdit /></button>: null}   {/* lien avec l'id à faire */}
+                 {localStorage.getItem("username") === MyPost.username || localStorage.getItem("Role")  === "true" ? <button onClick={()=>{Navigate(`/post/${MyPost.id}`)}} aria-label="accéder au post en détail" title="accéder au post en détail"><MdEdit /></button>: null}   {/* lien avec l'id à faire */}
                  
               </div>
               

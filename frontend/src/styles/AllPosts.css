@@ -72,7 +72,7 @@ hr {
   padding-right: 20px!important;
   color: #33cbe5!important;
 }
-#icons {
+.icons {
   font-size: 25px;
   padding: 7px;
   border: none;
@@ -80,8 +80,8 @@ hr {
   color: #fff;
   transition: 0.2s;
 }
-#icons:hover,
-#icons:active {
+.icons:hover,
+.icons:active {
   cursor: pointer;
   color: #33cbe5;
 }

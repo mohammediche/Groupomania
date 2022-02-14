@@ -58,7 +58,7 @@ const Post = () => {
 
         <hr />
         <div className="post-text">
-          <img alt="contenu du post" style={{width : 100 + "%"}} src={PostData.image}></img>
+        {PostData.image && <img alt="contenu du post" style={{width : 100 + "%"}} src={PostData.image}></img>}
           <h2 className="name-profil">{PostData.title}</h2>
           <p>{PostData.postText}</p>
         </div>

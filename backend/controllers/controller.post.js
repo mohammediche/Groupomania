@@ -51,13 +51,15 @@ exports.deletePost =  (req, res, next)=>{
         const id = req.params.id; //id du post
         Posts.findOne({where:{ id: id } })
         .then((post)=>{
-          const filename = post.image.split("/images/")[1]; // (split renvoi un tableau de 2 élements, un qui vient avant le /images/, et un apres qui est le nom du fichier(filename))
-
-          fs.unlink(`images/${filename}`, () => {
+          if (req.file) {
+            const filename = post.image.split("/images/")[1]; // (split renvoi un tableau de 2 élements, un qui vient avant le /images/, et un apres qui est le nom du fichier(filename))
+            fs.unlink(`images/${filename}`,()=>{})
+          }
+         
             //on supprime avec unlink,
             post.destroy({where:{ id: id } });
             res.status(200).json("delete");
-          });
+  
 
         })
 
@@ -72,28 +74,38 @@ exports.modifyPost = async (req, res, next)=>{
 
 
       const PostBody = {
-        image :`${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         title : req.body.title,
-        postText : req.body.postText
+        postText : req.body.postText,
+        username : req.user.username, // req.user correspond aux données de l'utilisateur connecté ! voir fichier Auth si besoin
+        UserId : req.user.id
        }
-       PostBody.username = req.user.username; // req.user correspond aux données de l'utilisateur connecté ! voir fichier Auth si besoin
-       PostBody.UserId = req.user.id;
+              
+       const post = await Posts.findOne({where:{ id: id } })
 
-       console.log("this is my body req ===>");
-       console.log(req.body);
-
-       
-        const post = await Posts.findOne({where:{ id: id } })
+       if (req.file) {
+         PostBody.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
+        
+         // si le post contient une image et que celle ci n'est pas vide
+         if (post.image && post.image !== "") {
+          const filename = post.image.split("/images/")[1]; 
+          fs.unlink(`images/${filename}`,()=>{})          
+         }
     
-        const filename = post.image.split("/images/")[1]; // (split renvoi un tableau de 2 élements, un qui vient avant le /images/, et un apres qui est le nom du fichier(filename))
 
-        fs.unlink(`images/${filename}`, () => {
-          //on supprime un fichier avec unlink,
-        });
+         // si un post contient une image à la création, et au modif il n'en a pas, on fait ca
+       }else{
+         PostBody.image = null
+         if (post.image && post.image !== "") {
+          const filename = post.image.split("/images/")[1]; 
+          fs.unlink(`images/${filename}`,()=>{})          
+         }
+       }
+
         await Posts.update(PostBody, {where : {id: id}})
         res.status(200).json(PostBody);
       } 
     catch (error) {
+      console.log(error);
         res.status(404).json({ error });
       } 
     

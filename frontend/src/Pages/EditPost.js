@@ -32,15 +32,19 @@ const EditPost = () => {
         })
 
     }, [])
+
     
     const modifPost = (e) => {       
       e.preventDefault();
       const formData = new FormData();
-    formData.append("image", image)
     formData.append("title", title)
     formData.append("postText", postText)
-   
-      // const posts = { title, postText };
+
+
+      if (image) {
+        formData.append("image", image)   
+      }
+      
       axios.put(`http://localhost:3001/posts/byId/${postId}`, formData, {
         headers:{
           accessToken: localStorage.getItem("autorisationToken") //on passe le key de notre localStorage
@@ -60,7 +64,7 @@ const EditPost = () => {
         <input  className="sous-form input-title" placeholder="Votre titre..." required autoFocus onChange={(e) => { setTitle(e.target.value);}}id="espace-title"type="text"value={title}/>
         <textarea className="sous-form textarea" placeholder="Quoi de neuf?" required onChange={(e) => {setPostText(e.target.value);}}type="text"value={postText}/>
         <label style={{color : "#fff"}} htmlFor="image">Choisir un fichier</label>
-        <input type="file" name="image" id="image" required onChange={(e)=>{ setImage(e.target.files[0])  }} />
+        <input type="file" name="image" id="image" onChange={(e)=>{ setImage(e.target.files[0])  }} />
 
         <div className="div-button-publier">
         <button title="publier le post ?">Publier </button>

@@ -142,6 +142,7 @@ const Profile = () => {
 
             <hr />
             <div className="post-text">
+              {MyPost.image &&<img className='imagePost' src={MyPost.image}></img>}
               <h2 className="name-profil">{MyPost.title}</h2>
               <p>{MyPost.postText}</p>
             </div>
